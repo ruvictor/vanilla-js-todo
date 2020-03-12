@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do list</title>
+    <link res="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web">
+    <script src="https://kit.fontawesome.com/653b31a42d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- container-->
+    <div class="container">
+        <!-- header -->
+        <div class="header">
+            To Do List
+        </div>
+        <!-- /header -->
+        <!-- content -->
+        <div class="content">
+            <!-- dateAndClear -->
+            <div class="dateAndClear">
+                <!-- date -->
+                <div class="date">
+                    Monday 1st
+                </div>
+                <!-- /date -->
+                <!-- clear -->
+                <div class="clear">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <!-- /clear -->
+            </div>
+            <!-- /dateAndClear -->
+            <!-- us list -->
+            <ul is="list">
+                <li class="item">
+                    <i class="far fa-circle co" job="complete" id="0"></i> 
+                    <p>Drink Coffee</p>
+                    <i class="far fa-trash-alt" job="delete" id="0"></i>
+                </li>
+            </ul>
+            <!-- /us list -->
+        </div>
+        <!-- /content -->
+        <!-- addToDo -->
+        <div class="addToDo">
+            <i class="fas fa-plus-circle"></i>
+            <input type="text" id="input" placeholder="Add new item">
+        </div>
+        <!-- /addToDo -->
+    </div>
+    <!-- /container-->
+</body>
+</html>
