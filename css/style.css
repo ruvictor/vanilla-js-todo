@@ -60,7 +60,7 @@ body{
 }
 
 .co{
-    flex: 0.07;
+    flex: 0.1;
     line-height: 1.2;
 }
 
@@ -86,4 +86,12 @@ body{
     width: 100%;
     font-size: 15px;
     border: 0;
+}
+
+.fa-trash-alt:hover,
+.fa-check-circle:hover,
+.fa-circle:hover,
+.fa-sync-alt:hover{
+    cursor: pointer;
+    text-shadow: 0 0 3px #4e4a4a;
 }

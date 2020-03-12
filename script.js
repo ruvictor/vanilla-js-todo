@@ -52,8 +52,8 @@ function addNewItem(ToDoitem, id, done, trash){
 
     const item = `
     <li class="item">
+        <p class="text ${LINE}">${id + 1}) ${ToDoitem}</p>
         <i class="far ${DONE} co" job="complete" id="${id}"></i> 
-        <p class="text ${LINE}">${ToDoitem}</p>
         <i class="far fa-trash-alt" job="delete" id="${id}"></i>
     </li>
     `;
