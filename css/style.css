@@ -43,7 +43,7 @@ body{
     align-items: center;
 }
 
-.dateAndClear .date{
+.dateAndClear #date{
     flex: 1;
 }
 
@@ -70,7 +70,7 @@ body{
     flex: 1;
 }
 
-.lineThrough{
+.checkedLine{
     text-decoration: line-through;
     color : #ccc;
 }
