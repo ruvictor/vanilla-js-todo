@@ -59,8 +59,9 @@ body{
     border-bottom: 1px solid #ccc;
 }
 
-.content .co{
+.co{
     flex: 0.07;
+    line-height: 1.2;
 }
 
 .content li p{
@@ -81,6 +82,7 @@ body{
 }
 
 .addToDo input{
+    margin: 0 0 0 7px;
     width: 100%;
     font-size: 15px;
     border: 0;
