@@ -11,6 +11,12 @@ const list = document.querySelector('#list');
 
 // UI Class
 class UI{
+    //display todos
+    static displayToDo(){
+        const todos = Store.getToDos();
+        todos.forEach((todo) => UI.addToDoToList(todo, id));
+    }
+
     // add ToDo To List
     static addToDoToList(toDo, id){
         const liItem = `<li>
@@ -39,8 +45,34 @@ class UI{
     // clear all todo
     static clearToDo(){
         list.innerHTML = '';
+        localStorage.clear();
     }
 }
+
+// store class
+class Store{
+    static getToDos(){
+        let todos;
+        if(localStorage.getItem('toDo') === null){
+            todos = [];
+        }else{
+            todos = JSON.parse(localStorage.getItem('toDo'));
+        }
+        return todos;
+    }
+
+    static addToDo(toDo, id){
+
+        const todos = Store.getToDos();
+
+        todos.push({text: toDo, id: id});
+
+        localStorage.setItem('toDo', JSON.stringify(todos));
+    }
+}
+
+// Event to display todos
+document.addEventListener('DOMContentLoaded', UI.displayToDo);
 
 // if press ENTER then we call 
 // addNewTodo from UI
@@ -49,7 +81,13 @@ document.addEventListener("keyup", function(){
         const toDoItem = input.value;
         // here a little validation
         if(toDoItem){
+            // add to do to UI
             UI.addToDoToList(toDoItem, id);
+
+            // add to to to loclal storage
+            Store.addToDo(toDoItem, id);
+
+            // increment id
             id++;
         }
         input.value = "";
