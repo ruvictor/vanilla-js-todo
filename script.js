@@ -13,7 +13,6 @@ const list = document.querySelector('#list');
 class UI{
     // add ToDo To List
     static addToDoToList(toDo, id){
-        console.log(list);
         const liItem = `<li>
         <p class="text">${toDo}</p>
         <i class="far fa-circle co" action="complete" id="${id}"></i>
@@ -35,6 +34,11 @@ class UI{
         element.classList.toggle(CHECK);
         element.classList.toggle(UNCHECK);
         element.parentNode.querySelector(".text").classList.toggle("checkedLine");
+    }
+
+    // clear all todo
+    static clearToDo(){
+        list.innerHTML = '';
     }
 }
 
