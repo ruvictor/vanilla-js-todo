@@ -1,115 +1,68 @@
-// Select elements
-const date = document.getElementById('date');
-const clear = document.querySelector(".clear");
-const list = document.getElementById("list");
-const input = document.getElementById("input");
-
-// define classes
-const CHECK = "fa-check-circle";
-const UNCHECK = "fa-circle";
-const checkedLine = "checkedLine";
-
-// variables
-let LIST, id;
-
-// clear storage
-clear.addEventListener("click", function(){
-    localStorage.clear();
-    location.reload();
-});
-
-// get item from localstorage
-let data = localStorage.getItem("TODO");
-if(data){
-    LIST = JSON.parse(data);
-    console.log(LIST);
-    id = LIST.length; // set the is to the last one in the list
-    LoadList(LIST); // load the list to the user interface
-}else{
-    LIST = [];
-    id = 0;
-}
-
-// load items to user interface
-function LoadList(array){
-    array.forEach(function(item){
-        addNewItem(item.name, item.id, item.done, item.trash);
-    });
-}
-
+// output todays date
 //today's date
-const options = {weekday: "long", month: "short", day:"numeric"}
+const date = document.getElementById('date');
+const options = {weekday: "long", month: "short", day: "numeric"}
 const today = new Date();
-
 date.innerHTML = today.toLocaleDateString("en-US", options);
 
-// new todo function
-function addNewItem(ToDoitem, id, done, trash){
-    if(trash) {return;}
+// vars
+let todoArray = [], id = 0;
+const list = document.querySelector('#list');
 
-    const DONE = done ? CHECK : UNCHECK;
-    const LINE = done ? checkedLine : "";
+// UI Class
+class UI{
+    // add ToDo To List
+    static addToDoToList(toDo, id){
+        console.log(list);
+        const liItem = `<li>
+        <p class="text">${toDo}</p>
+        <i class="far fa-circle co" action="complete" id="${id}"></i>
+        <i class="far fa-trash-alt" action="delete" id="${id}"></i>
+        </li>`;
+        const position = "beforeend";
+        list.insertAdjacentHTML(position, liItem);
+    }
 
-    const item = `
-    <li class="item">
-        <p class="text ${LINE}">${id + 1}) ${ToDoitem}</p>
-        <i class="far ${DONE} co" job="complete" id="${id}"></i> 
-        <i class="far fa-trash-alt" job="delete" id="${id}"></i>
-    </li>
-    `;
-    const position = "beforeend";
-    list.insertAdjacentHTML(position, item);
+    // remove element
+    static removeToDo(element){
+        element.parentNode.parentNode.removeChild(element.parentNode);
+    }
+
+    // complete element
+    static completeToDo(element){
+        const CHECK = "fa-check-circle";
+        const UNCHECK = "fa-circle";
+        element.classList.toggle(CHECK);
+        element.classList.toggle(UNCHECK);
+        element.parentNode.querySelector(".text").classList.toggle("checkedLine");
+    }
 }
 
-// enter key listener
+// if press ENTER then we call 
+// addNewTodo from UI
 document.addEventListener("keyup", function(){
     if(event.keyCode == 13){
-        const ToDoitem = input.value;
-        // check if there is any text in the todo
-        if(ToDoitem){
-            addNewItem(ToDoitem, id, false, false);
-            LIST.push({
-                name: ToDoitem,
-                id: id,
-                done: false,
-                trash: false
-            });
-
-            // add to localstorage
-            localStorage.setItem("TODO", JSON.stringify(LIST));
-
+        const toDoItem = input.value;
+        // here a little validation
+        if(toDoItem){
+            UI.addToDoToList(toDoItem, id);
             id++;
         }
         input.value = "";
     }
 });
 
-// complet todo
-function completeToDo(element){
-    element.classList.toggle(CHECK);
-    element.classList.toggle(UNCHECK);
-    element.parentNode.querySelector(".text").classList.toggle(checkedLine);
-
-    LIST[element.id].done = LIST[element.id].done ? false : true;
-}
-
-// delete doto
-function deleteToDo(element){
-    element.parentNode.parentNode.removeChild(element.parentNode);
-
-    LIST[element.id].trash = true;
-}
-
-// target the items created dynamicly
-list.addEventListener("click", function(event){
+// this method is for checking and removing items
+list.addEventListener("click", (event) => {
+    
     const element = event.target;
-    const elementJob = element.attributes.job.value;
-
-    if(elementJob == "complete"){
-        completeToDo(element);
-    }else if(elementJob == "delete"){
-        deleteToDo(element);
+    if(element.attributes.action){
+        const elementAction = element.attributes.action.value;
+        if(elementAction == "complete"){
+            UI.completeToDo(element);
+        }else if(elementAction == "delete"){
+            UI.removeToDo(element);
+        }
     }
-    // add to localstorage
-    localStorage.setItem("TODO", JSON.stringify(LIST));
+    
 });

@@ -88,6 +88,13 @@ body{
     border: 0;
 }
 
+.fa-check-circle{
+    color: #49d668;
+}
+.fa-trash-alt:hover{
+    color: red;
+}
+
 .fa-trash-alt:hover,
 .fa-check-circle:hover,
 .fa-circle:hover,
