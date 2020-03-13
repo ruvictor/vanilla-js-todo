@@ -6,7 +6,7 @@ const today = new Date();
 date.innerHTML = today.toLocaleDateString("en-US", options);
 
 // vars
-let todoArray = [], id = 0;
+let id = 0;
 const list = document.querySelector('#list');
 
 // UI Class
@@ -14,14 +14,17 @@ class UI{
     //display todos
     static displayToDo(){
         const todos = Store.getToDos();
-        todos.forEach((todo) => UI.addToDoToList(todo, id));
+        todos.forEach((todo) => UI.addToDoToList(todo.text, todo.id, todo.completed));
     }
 
     // add ToDo To List
-    static addToDoToList(toDo, id){
+    static addToDoToList(toDo, id, ifChecked){
+        // 
+        const completed = ifChecked ? 'checkedLine' : '';
+        const statusIcon = ifChecked ? 'fa-check-circle' : 'fa-circle';
         const liItem = `<li>
-        <p class="text">${toDo}</p>
-        <i class="far fa-circle co" action="complete" id="${id}"></i>
+        <p class="text ${completed}">${toDo}</p>
+        <i class="far ${statusIcon} co" action="complete" id="${id}"></i>
         <i class="far fa-trash-alt" action="delete" id="${id}"></i>
         </li>`;
         const position = "beforeend";
@@ -30,7 +33,19 @@ class UI{
 
     // remove element
     static removeToDo(element){
+        // remove item from UI
         element.parentNode.parentNode.removeChild(element.parentNode);
+        
+        // get value of the current id and remove it from storage
+        const curId = element.attributes.id.value;
+        const todos = Store.getToDos();
+        todos.forEach((todo, index) => {
+            if(+todo.id === +curId){
+                todos.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('toDo', JSON.stringify(todos));
     }
 
     // complete element
@@ -40,6 +55,17 @@ class UI{
         element.classList.toggle(CHECK);
         element.classList.toggle(UNCHECK);
         element.parentNode.querySelector(".text").classList.toggle("checkedLine");
+
+        // update the storage
+        const curId = element.attributes.id.value;
+        const todos = Store.getToDos();
+        todos.forEach((todo, index) => {
+            if(+todo.id === +curId){
+                todos[index].completed = todos[index].completed ? false : true;
+            }
+        });
+
+        localStorage.setItem('toDo', JSON.stringify(todos));
     }
 
     // clear all todo
@@ -61,11 +87,11 @@ class Store{
         return todos;
     }
 
-    static addToDo(toDo, id){
+    static addToDoToList(toDo, id){
 
         const todos = Store.getToDos();
 
-        todos.push({text: toDo, id: id});
+        todos.push({text: toDo, id: id, completed: false});
 
         localStorage.setItem('toDo', JSON.stringify(todos));
     }
@@ -82,10 +108,10 @@ document.addEventListener("keyup", function(){
         // here a little validation
         if(toDoItem){
             // add to do to UI
-            UI.addToDoToList(toDoItem, id);
+            UI.addToDoToList(toDoItem, Date.now());
 
-            // add to to to loclal storage
-            Store.addToDo(toDoItem, id);
+            // add todo to loclal storage
+            Store.addToDoToList(toDoItem, Date.now());
 
             // increment id
             id++;
